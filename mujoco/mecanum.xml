@@ -1,0 +1,452 @@
+<mujoco model="vmecanumrover">
+  <compiler angle="radian" coordinate="local"/>
+  <option timestep="0.001" gravity="0 0 -9.81"/>
+  <compiler angle="radian" coordinate="local" autolimits="true"/>
+
+
+  <!-- URDFで使っていたメッシュをそのままassetに並べる -->
+  <asset>
+    <mesh name="mecanum_barrel" file="../meshes/stl/mecanum_barrel.stl"/>
+    <mesh name="mecanum_wheel_rev" file="../meshes/stl/mecanum_wheel_rev.stl"/>
+    <mesh name="mecanum_wheel" file="../meshes/stl/mecanum_wheel.stl"/>
+    <mesh name="mecanum_body" file="../meshes/stl/mecanum_body.stl"/>
+  </asset>
+
+  <worldbody>
+    <!-- URDFのbase_linkをルートにする -->
+    <body name="base_link" pos="0 0 0">
+
+      <!-- body_link -->
+      <body name="body_link">
+        <!-- xacro:box_inertial pos="0 0 0" mass="14.004" height="0.135" width="0.28" depth="0.34" を数値化 -->
+        <inertial pos="0 0 0" mass="14.004" diaginertia="0.226398 0.156173775 0.112761375"/>
+        <geom type="mesh" mesh="mecanum_body" rgba="0.8 0.8 0.8 1" contype="0" conaffinity="0"/>
+
+        <!-- 後ろ側のオプションボード＋非常停止ボタン -->
+        <body name="board_back_with_button" pos="-0.157 0 0.1585" euler="0 0 3.14159265">
+          <inertial pos="0 0 0" mass="0.078" diaginertia="0.000144509625 5.0968125e-05 9.36585e-05"/>
+          <geom type="mesh" mesh="mecanum_optionattachboard" rgba="0.8 0.8 0.8 1"/>
+
+          <body name="button_link" pos="0.032 0 -0.0072">
+            <inertial pos="0 0 0" mass="0.48" diaginertia="7.05744e-05 0.0036972448 0.0036986704"/>
+            <geom type="mesh" mesh="mecanum_button" rgba="1 0 0 1"/>
+          </body>
+        </body>
+       
+      </body> <!-- /body_link -->
+
+      <!-- ここから4輪（それぞれサス→モータ→シャフト→15個のバレル） -->
+      <!-- wheel0: 左タイプ（バレルが-45degでつく） -->
+      <body name="wheel0_attach_link" pos="0.115 0.132 0.075" euler="1.57079633 0 0">
+        <body name="wheel0_base_link">
+          <inertial pos="0 0 0" mass="0.01" diaginertia="0.0001 0.0001 0.0001"/>
+          <body name="wheel0_sus_link">
+            <inertial pos="0 0 0" mass="0.01" diaginertia="1e-05 1e-05 1e-05"/>
+
+            <body name="wheel0_motor_body_link">
+              <inertial pos="0 0 0" mass="0.88" diaginertia="0.00119147875 0.00119147875 0.0002178275"/>
+              <!-- モータの円筒（z軸方向に0.1215m） -->
+              <geom type="capsule" fromto="0 0 0 0 0 0.06075" size="0.02225" rgba="0.5 0.5 0.5 1"/>
+
+              <joint name="wheel0_motor_shaft_joint" type="hinge" axis="0 0 -1" damping="0.01"/>
+
+              <body name="wheel0_motor_shaft_link">
+                <inertial pos="0 0 0" mass="0.43525" diaginertia="0.00032652159 0.00032652159 0.000501408"/>
+                <geom type="mesh" mesh="mecanum_wheel_rev" rgba="0.8 0.8 0.8 1"/>
+
+                <!-- 15個のバレル(0〜336deg, 半径0.0666389m) -->
+                <!-- rot = -1 → xに -pi/4 を持たせる -->
+                <body name="wheel0_barrel0_link" pos="0.0666389000 0.0000000000 0" quat="0.923880 -0.382683 0.000000 0.000000">
+                  <joint name="wheel0_barrel0_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel1_link" pos="0.0608776644 0.0271044825 0" quat="0.923880 -0.382683 0.000000 0.000000">
+                  <joint name="wheel0_barrel1_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel2_link" pos="0.0445901276 0.0495223537 0" quat="0.843391 -0.349976 -0.155995 0.375330">
+                  <joint name="wheel0_barrel2_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel3_link" pos="0.0205925526 0.0633773601 0" quat="0.747435 -0.309017 -0.224144 0.543044">
+                  <joint name="wheel0_barrel3_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel4_link" pos="-0.0066531810 0.0663092917 0" quat="0.617317 -0.256065 -0.284707 0.686242">
+                  <joint name="wheel0_barrel4_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel5_link" pos="-0.0337123117 0.0579155425 0" quat="0.461940 -0.191342 -0.331414 0.800103">
+                  <joint name="wheel0_barrel5_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel6_link" pos="-0.0539120026 0.0391693626 0" quat="0.285494 -0.118256 -0.364705 0.879385">
+                  <joint name="wheel0_barrel6_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel7_link" pos="-0.0651826802 0.0138550064 0" quat="0.096134 -0.039945 -0.380748 0.918446">
+                  <joint name="wheel0_barrel7_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel8_link" pos="-0.0651826802 -0.0138550064 0" quat="-0.096134 0.039945 -0.380748 0.918446">
+                  <joint name="wheel0_barrel8_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel9_link" pos="-0.0539120026 -0.0391693626 0" quat="-0.285494 0.118256 -0.364705 0.879385">
+                  <joint name="wheel0_barrel9_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel10_link" pos="-0.03331945 -0.0577109803 0" quat="-0.461940 0.191342 -0.331414 0.800104">
+                  <joint name="wheel0_barrel10_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel11_link" pos="-0.0069656618 -0.0662738451 0" quat="-0.617317 0.256065 -0.284707 0.686242">
+                  <joint name="wheel0_barrel11_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel12_link" pos="0.0205925526 -0.0633773601 0" quat="-0.747435 0.309017 -0.224144 0.543044">
+                  <joint name="wheel0_barrel12_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel13_link" pos="0.0445901276 -0.0495223537 0" quat="-0.843391 0.349976 -0.155995 0.375330">
+                  <joint name="wheel0_barrel13_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel0_barrel14_link" pos="0.0608776644 -0.0271044825 0" quat="-0.903989 0.374607 -0.079459 0.192419">
+                  <joint name="wheel0_barrel14_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+
+              </body> <!-- wheel0_motor_shaft_link -->
+            </body> <!-- wheel0_motor_body_link -->
+          </body> <!-- wheel0_sus_link -->
+        </body> <!-- wheel0_base_link -->
+      </body> <!-- wheel0_attach_link -->
+
+      <!-- wheel1: 右タイプ（バレルが+45degでつく） -->
+      <body name="wheel1_attach_link" pos="0.115 -0.132 0.075" euler="-1.57079633 0 0">
+        <body name="wheel1_base_link">
+          <inertial pos="0 0 0" mass="0.01" diaginertia="0.0001 0.0001 0.0001"/>
+          <!-- <joint name="wheel1_sus_joint" type="slide" axis="0 0 1" range="-0.02 0.02" damping="0.01"/> -->
+          <body name="wheel1_sus_link">
+            <inertial pos="0 0 0" mass="0.01" diaginertia="1e-05 1e-05 1e-05"/>
+
+            <body name="wheel1_motor_body_link">
+              <inertial pos="0 0 0" mass="0.88" diaginertia="0.00119147875 0.00119147875 0.0002178275"/>
+              <geom type="capsule" fromto="0 0 0 0 0 0.06075" size="0.02225" rgba="0.5 0.5 0.5 1"/>
+
+              <joint name="wheel1_motor_shaft_joint" type="hinge" axis="0 0 -1" damping="0.01"/>
+
+              <body name="wheel1_motor_shaft_link">
+                <inertial pos="0 0 0" mass="0.43525" diaginertia="0.00032652159 0.00032652159 0.000501408"/>
+                <geom type="mesh" mesh="mecanum_wheel" rgba="0.8 0.8 0.8 1"/>
+
+                <!-- 右はrot=+1 → xに +pi/4 -->
+                <!-- 以下、wheel0のbarrelと全く同じ配置で euler の x だけ +0.785... に変わる -->
+                <body name="wheel1_barrel0_link" pos="0.0666389000 0.0000000000 0" quat="0.923880 0.382683 0.000000 0.000000">
+                  <joint name="wheel1_barrel0_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel1_link" pos="0.0608776644 0.0271044825 0" quat="0.923880 0.382683 0.000000 0.000000">
+                  <joint name="wheel1_barrel1_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel2_link" pos="0.0445901276 0.0495223537 0" quat="0.843391 0.349976 0.155995 0.375330">
+                  <joint name="wheel1_barrel2_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel3_link" pos="0.0205925526 0.0633773601 0" quat="0.747435 0.309017 0.224144 0.543044">
+                  <joint name="wheel1_barrel3_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel4_link" pos="-0.0066531810 0.0663092917 0" quat="0.617317 0.256065 0.284707 0.686242">
+                  <joint name="wheel1_barrel4_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel5_link" pos="-0.0337123117 0.0579155425 0" quat="0.461940 0.191342 0.331414 0.800103">
+                  <joint name="wheel1_barrel5_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel6_link" pos="-0.0539120026 0.0391693626 0" quat="0.285494 0.118256 0.364705 0.879385">
+                  <joint name="wheel1_barrel6_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel7_link" pos="-0.0651826802 0.0138550064 0" quat="0.096134 0.039945 0.380748 0.918446">
+                  <joint name="wheel1_barrel7_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel8_link" pos="-0.0651826802 -0.0138550064 0" quat="-0.096134 -0.039945 0.380748 0.918446">
+                  <joint name="wheel1_barrel8_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel9_link" pos="-0.0539120026 -0.0391693626 0" quat="-0.285494 -0.118256 0.364705 0.879385">
+                  <joint name="wheel1_barrel9_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel10_link" pos="-0.03331945 -0.0577109803 0" quat="-0.461940 -0.191342 0.331414 0.800104">
+                  <joint name="wheel1_barrel10_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel11_link" pos="-0.0069656618 -0.0662738451 0" quat="-0.617317 -0.256065 0.284707 0.686242">
+                  <joint name="wheel1_barrel11_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel12_link" pos="0.0205925526 -0.0633773601 0" quat="-0.747435 -0.309017 0.224144 0.543044">
+                  <joint name="wheel1_barrel12_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel13_link" pos="0.0445901276 -0.0495223537 0" quat="-0.843391 -0.349976 0.155995 0.375330">
+                  <joint name="wheel1_barrel13_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel1_barrel14_link" pos="0.0608776644 -0.0271044825 0" quat="-0.903989 -0.374607 0.079459 0.192419">
+                  <joint name="wheel1_barrel14_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+
+      <!-- wheel2 -->
+      <body name="wheel2_attach_link" pos="-0.115 0.132 0.075" euler="1.57079633 0 0">
+        <body name="wheel2_base_link">
+          <inertial pos="0 0 0" mass="0.01" diaginertia="0.0001 0.0001 0.0001"/>
+           <body name="wheel2_sus_link">
+            <inertial pos="0 0 0" mass="0.01" diaginertia="1e-05 1e-05 1e-05"/>
+            <body name="wheel2_motor_body_link">
+              <inertial pos="0 0 0" mass="0.88" diaginertia="0.00119147875 0.00119147875 0.0002178275"/>
+              <geom type="capsule" fromto="0 0 0 0 0 0.06075" size="0.02225" rgba="0.5 0.5 0.5 1"/>
+
+              <joint name="wheel2_motor_shaft_joint" type="hinge" axis="0 0 -1" damping="0.01"/>
+
+              <body name="wheel2_motor_shaft_link">
+                <inertial pos="0 0 0" mass="0.43525" diaginertia="0.00032652159 0.00032652159 0.000501408"/>
+                <geom type="mesh" mesh="mecanum_wheel" rgba="0.8 0.8 0.8 1"/>
+                <!-- バレルはwheel1と同じ並び -->
+                <body name="wheel2_barrel0_link" pos="0.0666389000 0.0000000000 0" quat="0.923880 0.382683 0.000000 0.000000">
+                  <joint name="wheel2_barrel0_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel1_link" pos="0.0608776644 0.0271044825 0" quat="0.923880 0.382683 0.000000 0.000000">
+                  <joint name="wheel2_barrel1_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel2_link" pos="0.0445901276 0.0495223537 0" quat="0.843391 0.349976 0.155995 0.375330">
+                  <joint name="wheel2_barrel2_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel3_link" pos="0.0205925526 0.0633773601 0" quat="0.747435 0.309017 0.224144 0.543044">
+                  <joint name="wheel2_barrel3_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel4_link" pos="-0.0066531810 0.0663092917 0" quat="0.617317 0.256065 0.284707 0.686242">
+                  <joint name="wheel2_barrel4_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel5_link" pos="-0.0337123117 0.0579155425 0" quat="0.461940 0.191342 0.331414 0.800103">
+                  <joint name="wheel2_barrel5_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel6_link" pos="-0.0539120026 0.0391693626 0" quat="0.285494 0.118256 0.364705 0.879385">
+                  <joint name="wheel2_barrel6_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel7_link" pos="-0.0651826802 0.0138550064 0" quat="0.096134 0.039945 0.380748 0.918446">
+                  <joint name="wheel2_barrel7_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel8_link" pos="-0.0651826802 -0.0138550064 0" quat="-0.096134 -0.039945 0.380748 0.918446">
+                  <joint name="wheel2_barrel8_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel9_link" pos="-0.0539120026 -0.0391693626 0" quat="-0.285494 -0.118256 0.364705 0.879385">
+                  <joint name="wheel2_barrel9_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel10_link" pos="-0.03331945 -0.0577109803 0" quat="-0.461940 -0.191342 0.331414 0.800104">
+                  <joint name="wheel2_barrel10_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel11_link" pos="-0.0069656618 -0.0662738451 0" quat="-0.617317 -0.256065 0.284707 0.686242">
+                  <joint name="wheel2_barrel11_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel12_link" pos="0.0205925526 -0.0633773601 0" quat="-0.747435 -0.309017 0.224144 0.543044">
+                  <joint name="wheel2_barrel12_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel13_link" pos="0.0445901276 -0.0495223537 0" quat="-0.843391 -0.349976 0.155995 0.375330">
+                  <joint name="wheel2_barrel13_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel2_barrel14_link" pos="0.0608776644 -0.0271044825 0" quat="-0.903989 -0.374607 0.079459 0.192419">
+                  <joint name="wheel2_barrel14_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+
+      <!-- wheel3 -->
+      <body name="wheel3_attach_link" pos="-0.115 -0.132 0.075" euler="-1.57079633 0 0">
+        <body name="wheel3_base_link">
+          <inertial pos="0 0 0" mass="0.01" diaginertia="0.0001 0.0001 0.0001"/>
+          <!-- <joint name="wheel3_sus_joint" type="slide" axis="0 0 1" range="-0.02 0.02" damping="0.01"/> -->
+          <body name="wheel3_sus_link">
+            <inertial pos="0 0 0" mass="0.01" diaginertia="1e-05 1e-05 1e-05"/>
+            <body name="wheel3_motor_body_link">
+              <inertial pos="0 0 0" mass="0.88" diaginertia="0.00119147875 0.00119147875 0.0002178275"/>
+              <geom type="capsule" fromto="0 0 0 0 0 0.06075" size="0.02225" rgba="0.5 0.5 0.5 1"/>
+
+              <joint name="wheel3_motor_shaft_joint" type="hinge" axis="0 0 -1" damping="0.01"/>
+
+              <body name="wheel3_motor_shaft_link">
+                <inertial pos="0 0 0" mass="0.43525" diaginertia="0.00032652159 0.00032652159 0.000501408"/>
+                <geom type="mesh" mesh="mecanum_wheel_rev" rgba="0.8 0.8 0.8 1"/>
+                <!-- バレルはwheel0と同じ並び（rot=-1） -->
+                <!-- ここも同様に15個分展開 -->
+                <!-- 15個のバレル(0〜336deg, 半径0.0666389m) -->
+                <!-- rot = -1 → xに -pi/4 を持たせる -->
+                <body name="wheel3_barrel0_link" pos="0.0666389000 0.0000000000 0" quat="0.923880 -0.382683 0.000000 0.000000">
+                  <joint name="wheel3_barrel0_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel1_link" pos="0.0608776644 0.0271044825 0" quat="0.923880 -0.382683 0.000000 0.000000">
+                  <joint name="wheel3_barrel1_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel2_link" pos="0.0445901276 0.0495223537 0" quat="0.843391 -0.349976 -0.155995 0.375330">
+                  <joint name="wheel3_barrel2_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel3_link" pos="0.0205925526 0.0633773601 0" quat="0.747435 -0.309017 -0.224144 0.543044">
+                  <joint name="wheel3_barrel3_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel4_link" pos="-0.0066531810 0.0663092917 0" quat="0.617317 -0.256065 -0.284707 0.686242">
+                  <joint name="wheel3_barrel4_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel5_link" pos="-0.0337123117 0.0579155425 0" quat="0.461940 -0.191342 -0.331414 0.800103">
+                  <joint name="wheel3_barrel5_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel6_link" pos="-0.0539120026 0.0391693626 0" quat="0.285494 -0.118256 -0.364705 0.879385">
+                  <joint name="wheel3_barrel6_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel7_link" pos="-0.0651826802 0.0138550064 0" quat="0.096134 -0.039945 -0.380748 0.918446">
+                  <joint name="wheel3_barrel7_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel8_link" pos="-0.0651826802 -0.0138550064 0" quat="-0.096134 0.039945 -0.380748 0.918446">
+                  <joint name="wheel3_barrel8_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel9_link" pos="-0.0539120026 -0.0391693626 0" quat="-0.285494 0.118256 -0.364705 0.879385">
+                  <joint name="wheel3_barrel9_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel10_link" pos="-0.03331945 -0.0577109803 0" quat="-0.461940 0.191342 -0.331414 0.800104">
+                  <joint name="wheel3_barrel10_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel11_link" pos="-0.0069656618 -0.0662738451 0" quat="-0.617317 0.256065 -0.284707 0.686242">
+                  <joint name="wheel3_barrel11_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel12_link" pos="0.0205925526 -0.0633773601 0" quat="-0.747435 0.309017 -0.224144 0.543044">
+                  <joint name="wheel3_barrel12_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel13_link" pos="0.0445901276 -0.0495223537 0" quat="-0.843391 0.349976 -0.155995 0.375330">
+                  <joint name="wheel3_barrel13_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+                <body name="wheel3_barrel14_link" pos="0.0608776644 -0.0271044825 0" quat="-0.903989 0.374607 -0.079459 0.192419">
+                  <joint name="wheel3_barrel14_joint" type="hinge" axis="0 0 1" damping="0.001"/>
+                  <inertial pos="0 0 0" mass="0.01225" diaginertia="1.76174478e-06 1.76174478e-06 5.597858e-07"/>
+                  <geom type="mesh" mesh="mecanum_barrel" rgba="0 0 0 1"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+
+    </body> <!-- /base_link -->
+  </worldbody>
+
+  <!-- URDFでtransmissionがあったjointはmotorで生やす -->
+  <actuator>
+    <!-- サスペンション4本 -->
+    
+    <!-- 車輪のモータ4つ -->    
+
+  </actuator>
+
+
+</mujoco>
