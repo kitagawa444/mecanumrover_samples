@@ -10,12 +10,14 @@
     <mesh name="mecanum_wheel_rev" file="../meshes/stl/mecanum_wheel_rev.stl"/>
     <mesh name="mecanum_wheel" file="../meshes/stl/mecanum_wheel.stl"/>
     <mesh name="mecanum_body" file="../meshes/stl/mecanum_body.stl"/>
+    <mesh name="mecanum_optionattachboard" file="../meshes/stl/mecanum_optionattachboard.stl"/>
+    <mesh name="mecanum_button" file="../meshes/stl/mecanum_button.stl"/>
   </asset>
 
   <worldbody>
     <!-- URDFのbase_linkをルートにする -->
     <body name="base_link" pos="0 0 0">
-
+       <freejoint/>
       <!-- body_link -->
       <body name="body_link">
         <!-- xacro:box_inertial pos="0 0 0" mass="14.004" height="0.135" width="0.28" depth="0.34" を数値化 -->
@@ -441,12 +443,28 @@
   </worldbody>
 
   <!-- URDFでtransmissionがあったjointはmotorで生やす -->
-  <actuator>
-    <!-- サスペンション4本 -->
-    
-    <!-- 車輪のモータ4つ -->    
+<actuator> 
+<!-- effort(=torque)を受ける --> 
+   <velocity name="wheel0" joint="wheel0_motor_shaft_joint" kv="20" ctrllimited="true" ctrlrange="-40 40"/> 
+   <velocity name="wheel1" joint="wheel1_motor_shaft_joint" kv="20" ctrllimited="true" ctrlrange="-40 40"/> 
+   <velocity name="wheel2" joint="wheel2_motor_shaft_joint" kv="20" ctrllimited="true" ctrlrange="-40 40"/> 
+   <velocity name="wheel3" joint="wheel3_motor_shaft_joint" kv="20" ctrllimited="true" ctrlrange="-40 40"/> 
+</actuator>
 
-  </actuator>
+  <option timestep="0.001" gravity="0 0 -9.81" collision="all"/>
+  <option density="1" viscosity="1e-3"/>
+  <option integrator="implicit" />
 
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1=".3 .5 .7" rgb2="0 0 0" width="32" height="512"/>
+    <texture name="body" type="cube" builtin="flat" mark="cross" width="128" height="128" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+    <material name="body" texture="body" texuniform="true" rgba="0.8 0.6 .4 1"/>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
+  </asset>
 
+  <worldbody>
+    <light directional="true" diffuse=".8 .8 .8" pos="0 0 10" dir="0 0 -10"/>
+    <geom name="floor" size="0 0 .05" type="plane" material="grid" condim="3"/>
+  </worldbody>
 </mujoco>
