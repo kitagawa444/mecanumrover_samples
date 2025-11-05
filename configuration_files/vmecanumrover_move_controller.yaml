@@ -1,20 +1,59 @@
-joint_controller0:
+pickmin1_joint_controller0:
   type: effort_controllers/JointVelocityController
-  joint: wheel0_motor_shaft_joint
+  joint: pickmin1_wheel0_motor_shaft_joint
   pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
 
-joint_controller1:
+pickmin1_joint_controller1:
   type: effort_controllers/JointVelocityController
-  joint: wheel1_motor_shaft_joint
+  joint: pickmin1_wheel1_motor_shaft_joint
   pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
 
-joint_controller2:
+pickmin1_joint_controller2:
   type: effort_controllers/JointVelocityController
-  joint: wheel2_motor_shaft_joint
+  joint: pickmin1_wheel2_motor_shaft_joint
   pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
 
-joint_controller3:
+pickmin1_joint_controller3:
   type: effort_controllers/JointVelocityController
-  joint: wheel3_motor_shaft_joint
+  joint: pickmin1_wheel3_motor_shaft_joint
   pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
 
+pickmin2_joint_controller0:
+  type: effort_controllers/JointVelocityController
+  joint: pickmin2_wheel0_motor_shaft_joint
+  pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
+
+pickmin2_joint_controller1:
+  type: effort_controllers/JointVelocityController
+  joint: pickmin2_wheel1_motor_shaft_joint
+  pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
+
+pickmin2_joint_controller2:
+  type: effort_controllers/JointVelocityController
+  joint: pickmin2_wheel2_motor_shaft_joint
+  pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
+
+pickmin2_joint_controller3:
+  type: effort_controllers/JointVelocityController
+  joint: pickmin2_wheel3_motor_shaft_joint
+  pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
+
+pickmin3_joint_controller0:
+  type: effort_controllers/JointVelocityController
+  joint: pickmin2_wheel0_motor_shaft_joint
+  pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
+
+pickmin3_joint_controller1:
+  type: effort_controllers/JointVelocityController
+  joint: pickmin2_wheel1_motor_shaft_joint
+  pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
+
+pickmin3_joint_controller2:
+  type: effort_controllers/JointVelocityController
+  joint: pickmin2_wheel2_motor_shaft_joint
+  pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}
+
+pickmin3_joint_controller3:
+  type: effort_controllers/JointVelocityController
+  joint: pickmin2_wheel3_motor_shaft_joint
+  pid: {p: 1.0, i: 0.0, d: 0.0001, i_clamp: 1.0, antiwindup: true}

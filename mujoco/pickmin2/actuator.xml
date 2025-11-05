@@ -1,0 +1,8 @@
+    <!-- effort(=torque)を受ける --> 
+    <!-- 車輪のモータ4つ -->
+    <actuator>
+    <motor name="pickmin2_wheel0_motor_shaft_joint" joint="pickmin2_wheel0_motor_shaft_joint" gear="1"/>
+    <motor name="pickmin2_wheel1_motor_shaft_joint" joint="pickmin2_wheel1_motor_shaft_joint" gear="1"/>
+    <motor name="pickmin2_wheel2_motor_shaft_joint" joint="pickmin2_wheel2_motor_shaft_joint" gear="1"/>
+    <motor name="pickmin2_wheel3_motor_shaft_joint" joint="pickmin2_wheel3_motor_shaft_joint" gear="1"/>
+</actuator>
