@@ -32,6 +32,7 @@
     <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
           args="pickmin1_joint_controller0 pickmin1_joint_controller1 pickmin1_joint_controller2 pickmin1_joint_controller3
                 pickmin2_joint_controller0 pickmin2_joint_controller1 pickmin2_joint_controller2 pickmin2_joint_controller3
+                pickmin3_joint_controller0 pickmin3_joint_controller1 pickmin3_joint_controller2 pickmin3_joint_controller3
                 joint_state_controller"/>
   </group>
 

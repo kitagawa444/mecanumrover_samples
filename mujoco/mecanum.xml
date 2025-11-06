@@ -51,12 +51,12 @@
   </worldbody>
 
   <!-- URDFでtransmissionがあったjointはmotorで生やす -->
-    <actuator> 
+    <actuator>
     <!-- effort(=torque)を受ける --> 
     <!-- 車輪のモータ4つ -->
-    <include file="pickmin1/actuator.xml" />
-    <include file="pickmin2/actuator.xml" />
-    <include file="pickmin3/actuator.xml" />
+        <include file="pickmin1/actuator.xml" />
+        <include file="pickmin2/actuator.xml" />
+        <include file="pickmin3/actuator.xml" />
     </actuator>
 
 </mujoco>
