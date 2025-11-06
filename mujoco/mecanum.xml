@@ -30,14 +30,22 @@
   </asset>
 
   <worldbody>
+         <!-- 運搬オブジェクト --> 
+    <body name="cargo" pos="0.0 0.0 0.3"> 
+      <freejoint name="cargo_free"/> 
+      <!-- 半寸法: 0.10 x 0.10 x 0.05 → 床(0)に接地するようz=0.05 --> 
+      <geom name="cargo_geom" type="box" size="1.2 1.2 0.1" density="800" rgba="0.2 0.6 0.2 1" friction="1.0 0.005 0.0001" condim="3"/>
+    </body> <!-- 目標位置のマーカー（任意） --> 
+    <site name="cargo_goal" pos="1.2 0.0 0.001" size="0.03" rgba="1 0 0 1" type="sphere"/> 
+
     <!-- URDFのbase_linkをルートにする -->
-    <body name="pickmin1_wrapper" pos="0 0 0">
+    <body name="pickmin1_wrapper" pos="0.577 0 0">
       <include file="pickmin1/pickmin.xml" />
     </body>
-    <body name="pickmin2_wrapper" pos="1 0 0">
+    <body name="pickmin2_wrapper" pos="-0.288 0.5 0" euler="0 0 2.09">
       <include file="pickmin2/pickmin.xml" />
     </body>
-    <body name="pickmin3_wrapper" pos="-1 0 0">
+    <body name="pickmin3_wrapper" pos="-0.288 -0.5 0" euler="0 0 -2.09">
       <include file="pickmin3/pickmin.xml" />
     </body>
   </worldbody>

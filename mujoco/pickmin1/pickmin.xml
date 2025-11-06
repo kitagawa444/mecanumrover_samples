@@ -16,7 +16,23 @@
             <geom type="mesh" mesh="mecanum_button" rgba="1 0 0 1"/>
           </body>
         </body>
-       
+        <!-- 前方ロッド＋先端ゴム球 -->
+          <body name="pickmin1_front_probe" pos="0.0 0 0.1">
+            <!-- ロッド（半径1.5cm、長さ18cm）: 自己衝突無効 -->
+            <geom name="pickmin1_front_rod" type="capsule"
+                  fromto="0 0 0  0.0 0 0.18" size="0.015"
+                  rgba="0.3 0.3 0.3 1"
+                  contype="0" conaffinity="0"
+                  friction="0.8 0.005 0.0001"/>
+
+            <!-- 先端ゴム球（半径3cm）: 接触有効・摩擦高め -->
+            <geom name="pickmin1_front_tip" type="sphere"
+                  pos="0.0 0 0.18" size="0.03"
+                  rgba="0.1 0.1 0.1 1"
+                  contype="1" conaffinity="1" condim="3"
+                  friction="1.8 0.01 0.0001"
+                  solimp="0.90 0.99 0.001" solref="0.01 1"/>
+          </body>
       </body> <!-- /body_link -->
 
       <!-- ここから4輪（それぞれサス→モータ→シャフト→15個のバレル） -->
