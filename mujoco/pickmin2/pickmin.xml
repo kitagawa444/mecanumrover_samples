@@ -48,7 +48,7 @@
               <!-- モータの円筒（z軸方向に0.1215m） -->
               <geom type="capsule" fromto="0 0 0 0 0 0.06075" size="0.02225" rgba="0.5 0.5 0.5 1"/>
 
-              <joint name="pickmin2_wheel0_motor_shaft_joint" type="hinge" axis="0 0 -1" damping="0.01"/>
+              <joint name="pickmin2_wheel0_motor_shaft_joint" type="hinge" axis="0 0 1" damping="0.01"/>
 
               <body name="pickmin2_wheel0_motor_shaft_link">
                 <inertial pos="0 0 0" mass="0.43525" diaginertia="0.00032652159 0.00032652159 0.000501408"/>
@@ -150,7 +150,7 @@
               <inertial pos="0 0 0" mass="0.88" diaginertia="0.00119147875 0.00119147875 0.0002178275"/>
               <geom type="capsule" fromto="0 0 0 0 0 0.06075" size="0.02225" rgba="0.5 0.5 0.5 1"/>
 
-              <joint name="pickmin2_wheel1_motor_shaft_joint" type="hinge" axis="0 0 -1" damping="0.01"/>
+              <joint name="pickmin2_wheel1_motor_shaft_joint" type="hinge" axis="0 0 1" damping="0.01"/>
 
               <body name="pickmin2_wheel1_motor_shaft_link">
                 <inertial pos="0 0 0" mass="0.43525" diaginertia="0.00032652159 0.00032652159 0.000501408"/>
@@ -249,7 +249,7 @@
               <inertial pos="0 0 0" mass="0.88" diaginertia="0.00119147875 0.00119147875 0.0002178275"/>
               <geom type="capsule" fromto="0 0 0 0 0 0.06075" size="0.02225" rgba="0.5 0.5 0.5 1"/>
 
-              <joint name="pickmin2_wheel2_motor_shaft_joint" type="hinge" axis="0 0 -1" damping="0.01"/>
+              <joint name="pickmin2_wheel2_motor_shaft_joint" type="hinge" axis="0 0 1" damping="0.01"/>
 
               <body name="pickmin2_wheel2_motor_shaft_link">
                 <inertial pos="0 0 0" mass="0.43525" diaginertia="0.00032652159 0.00032652159 0.000501408"/>
@@ -347,7 +347,7 @@
               <inertial pos="0 0 0" mass="0.88" diaginertia="0.00119147875 0.00119147875 0.0002178275"/>
               <geom type="capsule" fromto="0 0 0 0 0 0.06075" size="0.02225" rgba="0.5 0.5 0.5 1"/>
 
-              <joint name="pickmin2_wheel3_motor_shaft_joint" type="hinge" axis="0 0 -1" damping="0.01"/>
+              <joint name="pickmin2_wheel3_motor_shaft_joint" type="hinge" axis="0 0 1" damping="0.01"/>
 
               <body name="pickmin2_wheel3_motor_shaft_link">
                 <inertial pos="0 0 0" mass="0.43525" diaginertia="0.00032652159 0.00032652159 0.000501408"/>
