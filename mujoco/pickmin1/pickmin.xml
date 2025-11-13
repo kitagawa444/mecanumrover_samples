@@ -18,6 +18,7 @@
         </body>
         <!-- 前方ロッド＋先端ゴム球 -->
           <body name="pickmin1_front_probe" pos="0.0 0 0.1">
+          <site name="pickmin1_tip_site" pos="0.0 0 0.0" size="0.01" type="sphere" rgba="0 1 0 0.4"/>
             <!-- ロッド（半径1.5cm、長さ18cm）: 自己衝突無効 -->
             <geom name="pickmin1_front_rod" type="capsule"
                   fromto="0 0 0  0.0 0 0.18" size="0.015"

@@ -59,4 +59,11 @@
         <include file="pickmin3/actuator.xml" />
     </actuator>
 
+    <sensor> 
+    <!-- Site座標系での力・モーメント --> 
+    <force name="pickmin1_tip_force" site="pickmin1_tip_site"/> 
+    <torque name="pickmin1_tip_torque" site="pickmin1_tip_site"/> 
+    <!-- 接触法線力のスカラーが欲しければ --> <!-- <touch name="pickmin1_tip_touch" geom="pickmin1_front_tip"/> --> 
+    </sensor>
+
 </mujoco>
